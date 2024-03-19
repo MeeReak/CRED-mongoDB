@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import StudentModel from "../models/studentModel";
+import { StatusCode } from "../utils/statusCode";
 
 //get all student
 export const showAllStudent = async (req: any, res: any) => {
   const student = await StudentModel.find({}).sort({ createdAt: -1 });
 
-  res.status(200).json({ student });
+  res.status(StatusCode.OK).json({ student });
 };
 
 //get a single student
@@ -37,9 +38,9 @@ export const addNewStudent = async (req: any, res: any) => {
   //add doc to db
   try {
     const student = await StudentModel.create({ name, age, university });
-    res.status(200).json({ student });
+    res.status(StatusCode.OK).json({ student });
   } catch (error: any) {
-    res.status(400).json({ error: error.message });
+    res.status(StatusCode.BadRequest).json({ error: error.message });
   }
 };
 
@@ -48,14 +49,16 @@ export const deleteStudentById = async (req: any, res: any) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Student not found!!" });
+    return res
+      .status(StatusCode.NotFound)
+      .json({ error: "Student not found!!" });
   }
 
   const student = await StudentModel.findOneAndDelete({ _id: id });
 
   student
-    ? res.status(200).json(student)
-    : res.status(404).json({ error: "Student not found" });
+    ? res.status(StatusCode.OK).json(student)
+    : res.status(StatusCode.NotFound).json({ error: "Student not found" });
 };
 
 //update a student
@@ -63,7 +66,9 @@ export const updateStudentInfo = async (req: any, res: any) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Student not found!!" });
+    return res
+      .status(StatusCode.NotFound)
+      .json({ error: "Student not found!!" });
   }
 
   const student = await StudentModel.findOneAndUpdate(
@@ -72,6 +77,6 @@ export const updateStudentInfo = async (req: any, res: any) => {
   );
 
   student
-    ? res.status(200).json(student)
-    : res.status(400).json({ error: "Student not found" });
+    ? res.status(StatusCode.OK).json(student)
+    : res.status(StatusCode.NotFound).json({ error: "Student not found" });
 };

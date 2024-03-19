@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { userSchema } from "../schema/userSchema"; // Import the schema
 import { ZodError } from "zod";
+import { StatusCode } from "../utils/statusCode";
+import { ApiError } from "../utils/classError";
 
 export const validateUser = (
   req: Request,
@@ -19,7 +21,10 @@ export const validateUser = (
         },
         {}
       );
-      return res.status(400).json({ error: formattedErrors });
+      const formattedErrorString = JSON.stringify(formattedErrors)
+      const inputError = new ApiError(formattedErrorString, StatusCode.NotFound)
+      next(inputError)
+     
     } else {
       console.error("Unexpected error:", error);
       res.status(500).json({ error: "Internal Server Error" });

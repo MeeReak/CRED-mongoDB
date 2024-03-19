@@ -10,7 +10,7 @@ export const handError = (
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({
       statusCode: err.statusCode,
-      message: err.message,
+      message: JSON.parse(err.message),
     });
   }
   next();
