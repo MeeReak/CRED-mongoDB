@@ -21,13 +21,19 @@ export const validateUser = (
         },
         {}
       );
-      const formattedErrorString = JSON.stringify(formattedErrors)
-      const inputError = new ApiError(formattedErrorString, StatusCode.NotFound)
-      next(inputError)
-     
+      const formattedErrorString = JSON.stringify(formattedErrors);
+      const inputError = new ApiError(
+        formattedErrorString,
+        StatusCode.NotFound
+      );
+      next(inputError);
     } else {
       console.error("Unexpected error:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      const internalError = new ApiError(
+        "Internal Server Error!!",
+        StatusCode.BadRequest
+      );
+      next(internalError);
     }
   }
 };

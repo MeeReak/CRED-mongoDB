@@ -19,9 +19,6 @@ router.get("/:id", validateID, showStudentById);
 
 //POST a new student
 router.post("/", validateUser, addNewStudent);
-// router.post("/", (req: Request, res: Response, next: Function)=>{
-  
-// });
 
 //DELETE a new student
 router.delete("/:id", validateID, deleteStudentById);

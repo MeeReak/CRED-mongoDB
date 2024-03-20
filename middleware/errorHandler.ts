@@ -1,17 +1,16 @@
-import { Request, Response } from "express";
 import { ApiError } from "../utils/classError";
+import { Response, Request, NextFunction } from "express";
 
-export const handError = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: () => void
-) => {
+export const handError = (err: any , req: Request, res: Response, next: NextFunction) => {
   if (err instanceof ApiError) {
-    res.status(err.statusCode).json({
-      statusCode: err.statusCode,
-      message: JSON.parse(err.message),
-    });
+    const { statusCode, message } = err;
+    try {
+      const parsedMessage = JSON.parse(message);
+      res.status(statusCode).json({ statusCode, message: parsedMessage });
+    } catch (parseErr) {
+      res.status(statusCode).json({ statusCode, message });
+    }
+  } else {
+    next(err);
   }
-  next();
 };
