@@ -1,5 +1,4 @@
 import studentModel from "../models/studentModel";
-import { Request } from "express";
 
 export class UserRepo {
   //show all student
@@ -25,10 +24,10 @@ export class UserRepo {
   //update student by id
   async updateStudent(id: string, newData: object) {
     try {
-      console.log(newData);
       const updatedStudent = await studentModel.findOneAndUpdate(
         { _id: id },
-        newData
+        newData,
+        { new: true }
       );
       return updatedStudent; // Or return a success message
     } catch (error) {
