@@ -9,7 +9,7 @@ import {
   updateStudentInfo,
 } from "../controllers/studentController";
 import { validateID } from "../middleware/validateID";
-import { validateUser } from "../middleware/zod.validate";
+import { validateUser } from "../middleware/validateInput";
 
 //GET all students
 router.get("/", showAllStudent);

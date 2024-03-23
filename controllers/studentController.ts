@@ -68,8 +68,7 @@ export const deleteStudentById = async (
   const student = await service.deleteStudent(id);
 
   if (!student) {
-    const deleteError = new ApiError("Student Not Found!", StatusCode.NotFound);
-    next(deleteError);
+    next(new ApiError("Student Not Found!", StatusCode.NotFound));
   }
   res.status(StatusCode.OK).json(student);
 };
@@ -88,8 +87,7 @@ export const updateStudentInfo = async (
   const student = await service.updateStudent(id, { name, age, university });
 
   if (!student) {
-    const deleteError = new ApiError("Student Not Found!", StatusCode.NotFound);
-    next(deleteError);
+    next(new ApiError("Student Not Found!", StatusCode.NotFound));
   }
   res.status(StatusCode.OK).json(student);
 };

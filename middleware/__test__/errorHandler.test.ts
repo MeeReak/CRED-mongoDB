@@ -17,7 +17,6 @@ describe("errorHandler middleware", () => {
     next = jest.fn();
   });
 
-
   it("should handle ApiError correctly", () => {
     const mockError = new ApiError("Test Error", StatusCode.BadRequest);
 
@@ -31,7 +30,6 @@ describe("errorHandler middleware", () => {
     expect(res.json).toHaveBeenCalledWith(mockError.serializeErrorOutput());
   });
 
-
   it("should create a valid ApiError instance", () => {
     const mockError = new ApiError("Test Error", StatusCode.BadRequest);
 
@@ -41,12 +39,9 @@ describe("errorHandler middleware", () => {
     expect(mockError.name).toBe("ApiError");
   });
 
-  
   it("should capture stack trace", () => {
     const error = new ApiError("Test Error", StatusCode.InternalServerError);
 
     expect(error.stack).toBeDefined();
   });
-
-  
 });

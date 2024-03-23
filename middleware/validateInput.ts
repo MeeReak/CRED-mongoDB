@@ -28,12 +28,7 @@ export const validateUser = (
       );
       next(inputError);
     } else {
-      console.error("Unexpected error:", error);
-      const internalError = new ApiError(
-        "Internal Server Error!!",
-        StatusCode.BadRequest
-      );
-      next(internalError);
+      next(new ApiError("Internal Server Error!!", StatusCode.BadRequest));
     }
   }
 };

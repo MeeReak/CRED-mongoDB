@@ -9,10 +9,10 @@ export const validateID = async (
   next: Function
 ) => {
   const { id } = req.params;
-  const errorID = new ApiError("Invalid ID", StatusCode.NotFound);
+
   // console.log(errorID)
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    next(errorID);
+    next(new ApiError("Invalid ID", StatusCode.NotFound));
   }
   next();
 };
