@@ -7,8 +7,7 @@ import mongoose from "mongoose";
 mongoose
   .connect(process.env.MONG_URI as string)
   .then(async () => {
-    process.env.PORT = "3000";
-    await app.listen(process.env.PORT);
+    // await app.listen(process.env.PORT);
     //listen for requests
     app.listen(process.env.PORT, () => {
       console.log("Connect to db & listening on port", process.env.PORT);

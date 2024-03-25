@@ -64,7 +64,7 @@ describe("Books API", () => {
       .send({ name: "Mee Reak", age: 20, university: "SabaiCode" });
 
     // Assert on response status and body
-    expect(res.status).toBe(StatusCode.OK);
+    expect(res.status).toBe(StatusCode.Created);
     expect(res.body).toEqual({
       student: {
         name: "Mee Reak",
@@ -116,7 +116,7 @@ describe("Books API", () => {
     const res = await request(app).delete(`/api/student/${newStudent._id}`);
 
     // Assert on response status
-    expect(res.status).toBe(StatusCode.OK);
+    expect(res.status).toBe(StatusCode.NoContent);
 
     // Ensure that the student is deleted from the database
     const deletedStudent = await studentModel.findById(newStudent._id);

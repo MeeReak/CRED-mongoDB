@@ -9,14 +9,11 @@ export const showAllStudent = async (
   res: Response,
   next: NextFunction
 ) => {
-  // const student = await StudentModel.find({}).sort({ createdAt: -1 });
   const service = new UserService();
 
   const student = await service.showStudent();
 
   res.status(StatusCode.OK).json({ student });
-
-  // res.status(StatusCode.OK).json({ student });
 };
 
 //get a single student
@@ -35,7 +32,7 @@ export const showStudentById = async (
   if (!student) {
     next(new ApiError("Student Not Found!", StatusCode.NotFound));
   } else {
-    res.status(200).json({ student });
+    res.status(StatusCode.OK).json({ student });
   }
 };
 
@@ -52,7 +49,7 @@ export const addNewStudent = async (
 
   const student = await service.createStudent({ name, age, university });
 
-  res.status(StatusCode.OK).json({ student });
+  res.status(StatusCode.Created).json({ student });
 };
 
 //delete a student
@@ -70,7 +67,7 @@ export const deleteStudentById = async (
   if (!student) {
     next(new ApiError("Student Not Found!", StatusCode.NotFound));
   }
-  res.status(StatusCode.OK).json({student});
+  res.status(StatusCode.NoContent).json({ student });
 };
 
 //update a student
@@ -87,9 +84,8 @@ export const updateStudentInfo = async (
   const student = await service.updateStudent(id, { name, age, university });
 
   if (!student) {
-    next(new ApiError("Student Not Found!", StatusCode.NotFound));
+    next(new ApiError("Student Not Found!", StatusCode.NoContent));
   }
 
-
-  res.status(StatusCode.OK).json({student});
+  res.status(StatusCode.OK).json({ student });
 };
