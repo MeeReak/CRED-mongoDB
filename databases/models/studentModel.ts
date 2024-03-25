@@ -25,7 +25,14 @@ const studentSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.__v;
+      },
+    },
+  }
 );
 
 export default mongoose.model("Student", studentSchema);

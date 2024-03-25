@@ -89,5 +89,7 @@ export const updateStudentInfo = async (
   if (!student) {
     next(new ApiError("Student Not Found!", StatusCode.NotFound));
   }
+
+
   res.status(StatusCode.OK).json(student);
 };
