@@ -32,26 +32,6 @@ describe("Books API", () => {
     expect(res.body).toEqual({ student: [] });
   });
 
-  test("POST / - Create a new book", async () => {
-    // Make the request
-    const res = await request(app)
-      .post("/api/student")
-      .send({ name: "Mee Reak", age: 20, university: "SabaiCode" });
-
-    // Assert on response status and body
-    expect(res.status).toBe(StatusCode.OK);
-    expect(res.body).toEqual({
-      student: {
-        name: "Mee Reak",
-        age: 20,
-        university: "SabaiCode",
-        _id: expect.any(String),
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-      },
-    });
-  });
-
   test("GET /:id - Get a specific book", async () => {
     // Create a new book
     const newStudent = await studentModel.create({
@@ -77,6 +57,26 @@ describe("Books API", () => {
     });
   });
 
+  test("POST / - Create a new book", async () => {
+    // Make the request
+    const res = await request(app)
+      .post("/api/student")
+      .send({ name: "Mee Reak", age: 20, university: "SabaiCode" });
+
+    // Assert on response status and body
+    expect(res.status).toBe(StatusCode.OK);
+    expect(res.body).toEqual({
+      student: {
+        name: "Mee Reak",
+        age: 20,
+        university: "SabaiCode",
+        _id: expect.any(String),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      },
+    });
+  });
+
   test("Patch /:id - Update a specific book", async () => {
     // Create a new book
     const newStudent = await studentModel.create({
@@ -93,12 +93,33 @@ describe("Books API", () => {
     // Assert on response status and body
     expect(res.status).toBe(StatusCode.OK);
     expect(res.body).toEqual({
-      name: "Mee Reak",
-      age: 23,
-      university: "SabaiCode",
-      _id: newStudent._id.toString(),
-      createdAt: expect.any(String), // Expect createdAt to be a string
-      updatedAt: expect.any(String), // Expect updatedAt to be a string
+      student: {
+        name: "Mee Reak",
+        age: 23,
+        university: "SabaiCode",
+        _id: newStudent._id.toString(),
+        createdAt: expect.any(String), // Expect createdAt to be a string
+        updatedAt: expect.any(String), // Expect updatedAt to be a string
+      },
     });
+  });
+
+  test("DELETE /:id - Delete a specific student", async () => {
+    // Create a new student
+    const newStudent = await studentModel.create({
+      name: "Mee Reak",
+      age: 20,
+      university: "Royal University of Phnom Penh",
+    });
+
+    // Make the request to delete the student
+    const res = await request(app).delete(`/api/student/${newStudent._id}`);
+
+    // Assert on response status
+    expect(res.status).toBe(StatusCode.OK);
+
+    // Ensure that the student is deleted from the database
+    const deletedStudent = await studentModel.findById(newStudent._id);
+    expect(deletedStudent).toBeNull(); // Expect the deleted student to be null (not found)
   });
 });

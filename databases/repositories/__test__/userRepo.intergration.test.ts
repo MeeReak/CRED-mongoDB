@@ -12,7 +12,6 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri);
 });
 
-
 afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
@@ -109,6 +108,7 @@ describe("UserRepo", () => {
       age: 21,
       university: "Sabaicode",
     };
+
     const updatedStudent = await userRepo.updateStudent(
       createdStudent.id,
       updateData

@@ -70,7 +70,7 @@ export const deleteStudentById = async (
   if (!student) {
     next(new ApiError("Student Not Found!", StatusCode.NotFound));
   }
-  res.status(StatusCode.OK).json(student);
+  res.status(StatusCode.OK).json({student});
 };
 
 //update a student
@@ -91,5 +91,5 @@ export const updateStudentInfo = async (
   }
 
 
-  res.status(StatusCode.OK).json(student);
+  res.status(StatusCode.OK).json({student});
 };
