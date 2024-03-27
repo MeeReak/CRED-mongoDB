@@ -45,14 +45,15 @@ describe("Books API", () => {
 
     // Assert on response status and body
     expect(res.status).toBe(StatusCode.OK);
+    expect(res.body.student._id).toBe(newStudent._id.toString());
     expect(res.body).toEqual({
       student: {
         name: "Mee Reak",
         age: 20,
         university: "SabaiCode",
         _id: newStudent._id.toString(),
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
+        // createdAt: expect.any(String),
+        // updatedAt: expect.any(String),
       },
     });
   });
@@ -71,8 +72,8 @@ describe("Books API", () => {
         age: 20,
         university: "SabaiCode",
         _id: expect.any(String),
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
+        // createdAt: expect.any(String),
+        // updatedAt: expect.any(String),
       },
     });
   });
@@ -98,8 +99,8 @@ describe("Books API", () => {
         age: 23,
         university: "SabaiCode",
         _id: newStudent._id.toString(),
-        createdAt: expect.any(String), // Expect createdAt to be a string
-        updatedAt: expect.any(String), // Expect updatedAt to be a string
+        // createdAt: expect.any(String),
+        // updatedAt: expect.any(String),
       },
     });
   });

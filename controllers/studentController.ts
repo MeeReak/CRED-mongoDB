@@ -1,91 +1,103 @@
-import { StatusCode } from "../utils/statusCode";
-import { ApiError } from "../utils/classError";
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, RequestHandler } from "express";
 import { UserService } from "../services/userService";
+import { StatusCode } from "../utils/statusCode";
+import {
+  Route,
+  Get,
+  Post,
+  Delete,
+  Put,
+  Path,
+  Body,
+  Middlewares,
+  Response,
+  Patch,
+} from "tsoa";
+import { ApiError } from "../utils/classError";
+import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
 
-//get all student
-export const showAllStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const service = new UserService();
+interface Student {
+  name: string;
+  age: number;
+  university: string;
+}
 
-  const student = await service.showStudent();
+@Route("/api/student")
+export class StudentController {
+  private readonly userService: UserService;
 
-  res.status(StatusCode.OK).json({ student });
-};
-
-//get a single student
-export const showStudentById = async (
-  req: Request,
-  res: Response,
-  next: Function
-) => {
-  const { id } = req.params;
-
-  // Attempt to find student using findById()
-  const service = new UserService();
-
-  const student = await service.showStudentByID(id);
-
-  if (!student) {
-    next(new ApiError("Student Not Found!", StatusCode.NotFound));
-  } else {
-    res.status(StatusCode.OK).json({ student });
-  }
-};
-
-//create a new student
-export const addNewStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { name, age, university } = req.body;
-
-  //add doc to db
-  const service = new UserService();
-
-  const student = await service.createStudent({ name, age, university });
-
-  res.status(StatusCode.Created).json({ student });
-};
-
-//delete a student
-export const deleteStudentById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-
-  const service = new UserService();
-
-  const student = await service.deleteStudent(id);
-
-  if (!student) {
-    next(new ApiError("Student Not Found!", StatusCode.NotFound));
-  }
-  res.status(StatusCode.NoContent).json({ student });
-};
-
-//update a student
-export const updateStudentInfo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-
-  const service = new UserService();
-
-  const { name, age, university } = req.body;
-  const student = await service.updateStudent(id, { name, age, university });
-
-  if (!student) {
-    next(new ApiError("Student Not Found!", StatusCode.NoContent));
+  constructor(userService: UserService) {
+    this.userService = userService;
   }
 
-  res.status(StatusCode.OK).json({ student });
-};
+  @Get("/")
+  public async getAllStudents(): Promise<Student[]> {
+    try {
+      const students = await this.userService.showStudent();
+      return students;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get("/{id}")
+  public async getStudentById(@Path() id: string): Promise<void> {
+    try {
+      const student = await this.userService.showStudentByID(id);
+      if (!student) {
+        throw new ApiError("Student Not Found!", StatusCode.NotFound);
+      }
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post("/")
+  public async createStudent(@Body() requestBody: Student): Promise<void> {
+    const { name, age, university } = requestBody;
+
+    try {
+      const student = await this.userService.createStudent({
+        name,
+        age,
+        university,
+      });
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Delete("/{id}")
+  public async deleteStudentById(@Path() id: string): Promise<void> {
+    try {
+      const student = await this.userService.deleteStudent(id);
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Patch("/:id")
+  public async updateStudentInfo(
+    @Path() id: string,
+    @Body() requestBody: Student
+  ): Promise<void> {
+    const { name, age, university } = requestBody;
+
+    try {
+      const student = await this.userService.updateStudent(id, {
+        name,
+        age,
+        university,
+      });
+      if (!student) {
+        throw new ApiError("Student Not Found!", StatusCode.NotFound);
+      }
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+}

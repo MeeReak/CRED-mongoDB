@@ -2,7 +2,9 @@ const express = require("express");
 import { requestTime } from "./middleware/requestTime";
 import { paramsMethod } from "./middleware/paramsMethod";
 import { handError } from "./middleware/errorHandler";
-import studentRouter from "./routes/student";
+import studentRouter from "./routes/student.route";
+import swaggerUi from "swagger-ui-express";
+import * as swaggerDocument from "./build/swagger.json";
 
 // Create express app
 export const app = express();
@@ -15,6 +17,7 @@ app.use(requestTime);
 app.use(paramsMethod);
 
 //routes
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/student/", studentRouter);
 
 //global error handler

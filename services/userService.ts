@@ -1,7 +1,9 @@
 import { UserRepo } from "../databases/repositories/userRepo";
-import { Request } from "express";
 
 export class UserService {
+  static CreateStudentSchema(CreateStudentSchema: any): any {
+    throw new Error("Method not implemented.");
+  }
   static showStudent() {
     throw new Error("Method not implemented.");
   }
