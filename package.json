@@ -19,6 +19,7 @@
     "mongodb": "^6.5.0",
     "mongodb-memory-server": "^9.1.7",
     "mongoose": "^8.2.1",
+    "redoc-express": "^2.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "tsoa": "^6.2.0",

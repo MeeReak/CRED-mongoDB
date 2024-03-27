@@ -70,6 +70,7 @@ export class StudentController {
   }
 
   @Delete("/{id}")
+  @Response<Error>(StatusCode.NotFound, "User not found")
   public async deleteStudentById(@Path() id: string): Promise<void> {
     try {
       const student = await this.userService.deleteStudent(id);
