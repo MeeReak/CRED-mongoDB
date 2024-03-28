@@ -14,11 +14,11 @@ router.get("/", async (req: Request, res: Response, _next: NextFunction) => {
   try {
     const pageNumber = Number(req.query.pageNumber);
     const pageSize = Number(req.query.pageSize);
-    const students = await studentController.getAllStudents(
+    const student = await studentController.getAllStudents(
       pageNumber,
       pageSize
     );
-    res.status(StatusCode.OK).json({ students });
+    res.status(StatusCode.OK).json({ student });
   } catch (error) {
     _next(error);
   }

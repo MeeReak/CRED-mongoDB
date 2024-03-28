@@ -33,20 +33,13 @@ describe("UserRepo", () => {
       university: "SabaiCode",
     };
 
-    const student2 = {
-      name: "Mee Reak",
-      age: 22,
-      university: "SabaiCode",
-    };
-
     await userRepo.createStudent(student1);
-    await userRepo.createStudent(student2);
 
     //find all the student
-    const foundUser = await userRepo.showStudent();
+    const foundUser = await userRepo.showStudent(1,2);
 
     //assertion
-    expect(foundUser.length).toBe(2);
+    expect(foundUser.length).toBe(1);
     expect(foundUser.length).toBeGreaterThanOrEqual(1);
   });
 

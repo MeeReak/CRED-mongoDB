@@ -2,7 +2,7 @@ import studentModel from "../models/studentModel";
 
 export class UserRepo {
   //show all student
-  async showStudent(pageNumber: number, pageSize: number): Promise<any> {
+  async showStudent(pageNumber: number, pageSize: number) {
     const totalCount = await studentModel.countDocuments();
     const totalPages = Math.ceil(totalCount / pageSize);
     const student = await studentModel
@@ -11,7 +11,7 @@ export class UserRepo {
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
 
-    return { student, totalPages, totalCount };
+    return student ;
   }
 
   //show student bt id
