@@ -11,8 +11,17 @@ const studentController = new StudentController(new UserService());
 
 //GET all student
 router.get("/", async (req: Request, res: Response, _next: NextFunction) => {
-  const student = await studentController.getAllStudents();
-  res.status(StatusCode.OK).json({ student });
+  try {
+    const pageNumber = Number(req.query.pageNumber);
+    const pageSize = Number(req.query.pageSize);
+    const students = await studentController.getAllStudents(
+      pageNumber,
+      pageSize
+    );
+    res.status(StatusCode.OK).json({ students });
+  } catch (error) {
+    _next(error);
+  }
 });
 
 //GET a specific student

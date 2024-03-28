@@ -12,6 +12,7 @@ import {
   Middlewares,
   Response,
   Patch,
+  Query,
 } from "tsoa";
 import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
@@ -31,10 +32,13 @@ export class StudentController {
   }
 
   @Get("/")
-  public async getAllStudents(): Promise<Student[]> {
+  public async getAllStudents(
+    @Query() pageNumber: number = 1,
+    @Query() pageSize: number = 5
+  ): Promise<Student[]> {
     try {
-      const students = await this.userService.showStudent();
-      return students;
+      const student = await this.userService.showStudent(pageNumber, pageSize);
+      return student;
     } catch (error) {
       throw error;
     }

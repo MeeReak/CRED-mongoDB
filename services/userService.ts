@@ -1,6 +1,9 @@
 import { UserRepo } from "../databases/repositories/userRepo";
 
 export class UserService {
+  countStudents() {
+    throw new Error("Method not implemented.");
+  }
   static CreateStudentSchema(CreateStudentSchema: any): any {
     throw new Error("Method not implemented.");
   }
@@ -13,8 +16,8 @@ export class UserService {
   }
 
   //show all student
-  async showStudent() {
-    return await this.repo.showStudent();
+  async showStudent(pageNumber: number, pageSize: number) {
+    return await this.repo.showStudent(pageNumber, pageSize);
   }
 
   //show student by id
