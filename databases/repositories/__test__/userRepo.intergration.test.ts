@@ -1,6 +1,6 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { UserRepo } from "../userRepo";
+import { StudentRepo } from "../studentRepo";
 import studentModel from "../../models/studentModel";
 
 let mongoServer: MongoMemoryServer;
@@ -17,11 +17,11 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
-describe("UserRepo", () => {
-  let userRepo: UserRepo;
+describe("StudentRepo", () => {
+  let studentRepo: StudentRepo;
 
   beforeEach(async () => {
-    userRepo = new UserRepo();
+    studentRepo = new StudentRepo();
     await studentModel.deleteMany({});
   });
 
@@ -33,10 +33,10 @@ describe("UserRepo", () => {
       university: "SabaiCode",
     };
 
-    await userRepo.createStudent(student1);
+    await studentRepo.createStudent(student1);
 
     //find all the student
-    const foundUser = await userRepo.showStudent(1,2);
+    const foundUser = await studentRepo.showStudent(1, 2);
 
     //assertion
     expect(foundUser.length).toBe(1);
@@ -52,7 +52,7 @@ describe("UserRepo", () => {
     };
 
     //add that student to database
-    const newUser = await userRepo.createStudent(student);
+    const newUser = await studentRepo.createStudent(student);
 
     //assertion
     expect(newUser).toBeDefined();
@@ -61,7 +61,7 @@ describe("UserRepo", () => {
     expect(newUser.university).toBe(student.university);
 
     //check if the student is saved in the database
-    const foundUser = await userRepo.showStudentById(newUser.id);
+    const foundUser = await studentRepo.showStudentById(newUser.id);
     expect(foundUser).toBeDefined();
     expect(foundUser?.name).toEqual(student.name);
   });
@@ -74,13 +74,13 @@ describe("UserRepo", () => {
       university: "University of Lagos",
     };
 
-    const newUser = await userRepo.createStudent(student);
+    const newUser = await studentRepo.createStudent(student);
 
     //delete the student
-    await userRepo.deleteStudent(newUser.id);
+    await studentRepo.deleteStudent(newUser.id);
 
     // Assert deletion: Try finding the deleted student by ID
-    const foundUser = await userRepo.showStudentById(newUser.id);
+    const foundUser = await studentRepo.showStudentById(newUser.id);
 
     expect(foundUser).toBeNull();
   });
@@ -93,7 +93,7 @@ describe("UserRepo", () => {
       university: "University of Lagos",
     };
 
-    const createdStudent = await userRepo.createStudent(student);
+    const createdStudent = await studentRepo.createStudent(student);
 
     // Update student information
     const updateData = {
@@ -102,7 +102,7 @@ describe("UserRepo", () => {
       university: "Sabaicode",
     };
 
-    const updatedStudent = await userRepo.updateStudent(
+    const updatedStudent = await studentRepo.updateStudent(
       createdStudent.id,
       updateData
     );
@@ -114,7 +114,7 @@ describe("UserRepo", () => {
     expect(updatedStudent?.university).toBe(updateData.university);
 
     // Verify update in database
-    const foundUser = await userRepo.showStudentById(createdStudent.id);
+    const foundUser = await studentRepo.showStudentById(createdStudent.id);
     expect(foundUser).toBeDefined();
     expect(foundUser?.name).toEqual(updateData.name);
   });
@@ -125,7 +125,7 @@ describe("UserRepo", () => {
   //     age: 20,
   //   };
 
-  //   const adduser = await userRepo.createStudent(student)
+  //   const adduser = await studentRepo.createStudent(student)
 
   //   await expect(adduser).rejects.toThrow()
   // })
@@ -138,10 +138,10 @@ describe("UserRepo", () => {
     };
 
     //add that student to database
-    const newUser = await userRepo.createStudent(student);
+    const newUser = await studentRepo.createStudent(student);
 
     //find that student
-    const findUser = await userRepo.showStudentById(newUser.id);
+    const findUser = await studentRepo.showStudentById(newUser.id);
 
     // Assertions;
     expect(findUser).toBeDefined();

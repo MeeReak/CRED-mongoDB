@@ -1,4 +1,4 @@
-import { UserRepo } from "../databases/repositories/userRepo";
+import { StudentRepo } from "../databases/repositories/studentRepo";
 
 export class StudentService {
   countStudents() {
@@ -12,7 +12,7 @@ export class StudentService {
   }
   repo: any;
   constructor() {
-    this.repo = new UserRepo();
+    this.repo = new StudentRepo();
   }
 
   //show all student

@@ -1,6 +1,6 @@
 import studentModel from "../models/studentModel";
 
-export class UserRepo {
+export class StudentRepo {
   //show all student
   async showStudent(pageNumber: number, pageSize: number) {
     const totalCount = await studentModel.countDocuments();

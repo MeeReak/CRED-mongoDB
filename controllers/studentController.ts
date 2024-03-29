@@ -1,3 +1,96 @@
+//old code
+// import { StatusCode } from "../utils/statusCode";
+// import { ApiError } from "../utils/classError";
+// import { Request, Response, NextFunction } from "express";
+// import { UserService } from "../services/userService";
+
+// //get all student
+// export const showAllStudent = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const service = new UserService();
+
+//   const student = await service.showStudent();
+
+//   res.status(StatusCode.OK).json({ student });
+// };
+
+// //get a single student
+// export const showStudentById = async (
+//   req: Request,
+//   res: Response,
+//   next: Function
+// ) => {
+//   const { id } = req.params;
+
+//   // Attempt to find student using findById()
+//   const service = new UserService();
+
+//   const student = await service.showStudentByID(id);
+
+//   if (!student) {
+//     next(new ApiError("Student Not Found!", StatusCode.NotFound));
+//   } else {
+//     res.status(StatusCode.OK).json({ student });
+//   }
+// };
+
+// //create a new student
+// export const addNewStudent = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { name, age, university } = req.body;
+
+//   //add doc to db
+//   const service = new UserService();
+
+//   const student = await service.createStudent({ name, age, university });
+
+//   res.status(StatusCode.Created).json({ student });
+// };
+
+// //delete a student
+// export const deleteStudentById = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { id } = req.params;
+
+//   const service = new UserService();
+
+//   const student = await service.deleteStudent(id);
+
+//   if (!student) {
+//     next(new ApiError("Student Not Found!", StatusCode.NotFound));
+//   }
+//   res.status(StatusCode.NoContent).json({ student });
+// };
+
+// //update a student
+// export const updateStudentInfo = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const { id } = req.params;
+
+//   const service = new UserService();
+
+//   const { name, age, university } = req.body;
+//   const student = await service.updateStudent(id, { name, age, university });
+
+//   if (!student) {
+//     next(new ApiError("Student Not Found!", StatusCode.NoContent));
+//   }
+
+//   res.status(StatusCode.OK).json({ student });
+// };
+
 import { StudentService } from "../services/studentService";
 import { StatusCode } from "../utils/statusCode";
 import {
@@ -36,7 +129,10 @@ export class StudentController {
     @Query() pageSize: number = 5
   ): Promise<Student[]> {
     try {
-      const student = await this.studentService.showStudent(pageNumber, pageSize);
+      const student = await this.studentService.showStudent(
+        pageNumber,
+        pageSize
+      );
       return student;
     } catch (error) {
       throw error;
@@ -103,5 +199,10 @@ export class StudentController {
     } catch (error) {
       throw error;
     }
+  }
+
+  @Post("/login")
+  public async Signup(): Promise<void> {
+    
   }
 }
