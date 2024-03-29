@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from "express";
-import { studentSchema } from "../schema/studentSchema"; // Import the schema
-import { ZodError } from "zod";
-import { StatusCode } from "../utils/statusCode";
 import { ApiError } from "../utils/classError";
+import { StatusCode } from "../utils/statusCode";
+import { userSchema } from "../schema/userSchema";
+import { ZodError } from "zod";
 
-export const validateUser = (
+export const validateUserInput = (
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   try {
-    studentSchema.parse(req.body);
-    next();
-  } catch (error: any) {
+    userSchema.parse(req.body);
+    _next();
+  } catch (error) {
     if (error instanceof ZodError) {
       const formattedErrors = error.issues.reduce(
         (acc: { [key: string | number]: string }, issue) => {
@@ -26,9 +26,8 @@ export const validateUser = (
         formattedErrorString,
         StatusCode.NotFound
       );
-      next(inputError);
-    } else {
-      next(new ApiError("Internal Server Error!!", StatusCode.BadRequest));
+      _next(inputError);
+      _next(new ApiError("Internal Server Error!!", StatusCode.BadRequest));
     }
   }
 };

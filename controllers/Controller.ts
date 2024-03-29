@@ -109,6 +109,7 @@ import {
 import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
 import { UserService } from "../services/userService";
+import { generatePassword } from "../jwt";
 
 interface Student {
   name: string;
@@ -221,8 +222,13 @@ export class UserController {
   public async createUser(@Body() requestBody: User) {
     const { name, email, password } = requestBody;
 
+    const hashPassword = await generatePassword(password);
     try {
-      const user = await this.userService.SignUp({ email, password });
+      const user = await this.userService.SignUp({
+        name,
+        email,
+        password: hashPassword,
+      });
       return user;
     } catch (error) {
       throw error;

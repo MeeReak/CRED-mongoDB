@@ -2,6 +2,7 @@ import express, { Response, Request, NextFunction } from "express";
 import { UserController } from "../controllers/Controller";
 import { UserService } from "../services/userService";
 import { StatusCode } from "../utils/statusCode";
+import { validateUserInput } from "../middleware/validateUserInput";
 
 const userRouter = express.Router();
 
@@ -13,6 +14,7 @@ userRouter.get("/login", (req: Request, res: Response, _next: NextFunction) => {
 //signup
 userRouter.post(
   "/signup",
+  validateUserInput,
   async (req: Request, res: Response, _next: NextFunction) => {
     try {
       const userController = new UserController(new UserService());
