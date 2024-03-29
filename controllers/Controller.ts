@@ -108,11 +108,18 @@ import {
 } from "tsoa";
 import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
+import { UserService } from "../services/userService";
 
 interface Student {
   name: string;
   age: number;
   university: string;
+}
+
+interface User {
+  name: string;
+  email: string;
+  password: string;
 }
 
 @Route("/api/student")
@@ -200,9 +207,25 @@ export class StudentController {
       throw error;
     }
   }
+}
 
-  @Post("/login")
-  public async Signup(): Promise<void> {
-    
+@Route("/api/user")
+export class UserController {
+  private readonly userService: UserService;
+
+  constructor(userService: UserService) {
+    this.userService = userService;
+  }
+
+  @Post("/signup")
+  public async createUser(@Body() requestBody: User) {
+    const { name, email, password } = requestBody;
+
+    try {
+      const user = await this.userService.SignUp({ email, password });
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 }

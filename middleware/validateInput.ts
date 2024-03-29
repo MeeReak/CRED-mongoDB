@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { userSchema } from "../schema/userSchema"; // Import the schema
+import { userSchema } from "../schema/studentSchema"; // Import the schema
 import { ZodError } from "zod";
 import { StatusCode } from "../utils/statusCode";
 import { ApiError } from "../utils/classError";

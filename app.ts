@@ -7,6 +7,8 @@ import studentRouter from "./routes/student.route";
 import swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "./build/swagger.json";
 import redoc from "redoc-express";
+import router from "./routes/user.route";
+import userRouter from "./routes/user.route";
 
 // Create express app
 export const app = express();
@@ -57,6 +59,7 @@ app.get(
 //routes
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/student/", studentRouter);
+app.use("/api/user", userRouter)
 
 //global error handler
 app.use(handError);

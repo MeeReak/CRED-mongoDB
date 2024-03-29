@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { StudentController } from "../controllers/studentController";
+import { StudentController } from "../controllers/Controller";
 import { validateID } from "../middleware/validateID";
 import { validateUser } from "../middleware/validateInput";
 import { StudentService } from "../services/studentService";
