@@ -1,5 +1,4 @@
-import { NextFunction, RequestHandler } from "express";
-import { UserService } from "../services/userService";
+import { StudentService } from "../services/studentService";
 import { StatusCode } from "../utils/statusCode";
 import {
   Route,
@@ -25,10 +24,10 @@ interface Student {
 
 @Route("/api/student")
 export class StudentController {
-  private readonly userService: UserService;
+  private readonly studentService: StudentService;
 
-  constructor(userService: UserService) {
-    this.userService = userService;
+  constructor(studentService: StudentService) {
+    this.studentService = studentService;
   }
 
   @Get("/")
@@ -37,7 +36,7 @@ export class StudentController {
     @Query() pageSize: number = 5
   ): Promise<Student[]> {
     try {
-      const student = await this.userService.showStudent(pageNumber, pageSize);
+      const student = await this.studentService.showStudent(pageNumber, pageSize);
       return student;
     } catch (error) {
       throw error;
@@ -47,7 +46,7 @@ export class StudentController {
   @Get("/{id}")
   public async getStudentById(@Path() id: string): Promise<void> {
     try {
-      const student = await this.userService.showStudentByID(id);
+      const student = await this.studentService.showStudentByID(id);
       if (!student) {
         throw new ApiError("Student Not Found!", StatusCode.NotFound);
       }
@@ -62,7 +61,7 @@ export class StudentController {
     const { name, age, university } = requestBody;
 
     try {
-      const student = await this.userService.createStudent({
+      const student = await this.studentService.createStudent({
         name,
         age,
         university,
@@ -77,7 +76,7 @@ export class StudentController {
   @Response<Error>(StatusCode.NotFound, "User not found")
   public async deleteStudentById(@Path() id: string): Promise<void> {
     try {
-      const student = await this.userService.deleteStudent(id);
+      const student = await this.studentService.deleteStudent(id);
       return student;
     } catch (error) {
       throw error;
@@ -92,7 +91,7 @@ export class StudentController {
     const { name, age, university } = requestBody;
 
     try {
-      const student = await this.userService.updateStudent(id, {
+      const student = await this.studentService.updateStudent(id, {
         name,
         age,
         university,

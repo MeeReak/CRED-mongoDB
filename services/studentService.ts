@@ -1,6 +1,6 @@
 import { UserRepo } from "../databases/repositories/userRepo";
 
-export class UserService {
+export class StudentService {
   countStudents() {
     throw new Error("Method not implemented.");
   }

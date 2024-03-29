@@ -2,12 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import { StudentController } from "../controllers/studentController";
 import { validateID } from "../middleware/validateID";
 import { validateUser } from "../middleware/validateInput";
-import { UserService } from "../services/userService";
+import { StudentService } from "../services/studentService";
 import { StatusCode } from "../utils/statusCode";
 
 export const router = express.Router();
 
-const studentController = new StudentController(new UserService());
+const studentController = new StudentController(new StudentService());
 
 //GET all student
 router.get("/", async (req: Request, res: Response, _next: NextFunction) => {
@@ -44,7 +44,7 @@ router.post(
   validateUser,
   async (req: Request, res: Response, _next: NextFunction) => {
     try {
-      const studentController = new StudentController(new UserService());
+      const studentController = new StudentController(new StudentService());
       const student = await studentController.createStudent(req.body);
       res.status(StatusCode.Created).json({ student });
     } catch (error) {
