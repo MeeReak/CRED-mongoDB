@@ -105,11 +105,12 @@ import {
   Response,
   Patch,
   Query,
+  Tags,
 } from "tsoa";
 import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
 import { UserService } from "../services/userService";
-import { generatePassword } from "../jwt";
+import { generatePassword } from "../utils/jwt";
 
 interface Student {
   name: string;
@@ -124,6 +125,7 @@ interface User {
 }
 
 @Route("/api/student")
+@Tags("Student")
 export class StudentController {
   private readonly studentService: StudentService;
 
@@ -211,6 +213,7 @@ export class StudentController {
 }
 
 @Route("/api/user")
+@Tags("User")
 export class UserController {
   private readonly userService: UserService;
 
