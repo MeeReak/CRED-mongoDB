@@ -1,12 +1,13 @@
 import { UserRepo } from "../databases/repositories/userRepo";
+import { generateVerificationToken } from "../utils/generateToken";
 
-export class UserService{
+export class UserService {
   repo: any;
-  constructor(){
+  constructor() {
     this.repo = new UserRepo();
   }
 
-  async SignUp(newData: object){
+  async SignUp(newData: object) {
     return await this.repo.SignUp(newData);
   }
 }

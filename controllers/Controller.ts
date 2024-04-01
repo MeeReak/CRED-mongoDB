@@ -111,6 +111,8 @@ import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
 import { UserService } from "../services/userService";
 import { generatePassword } from "../utils/jwt";
+import { generateVerificationToken } from "../utils/generateToken";
+import { sendVerificationEmail } from "../utils/sendVerifyEmail";
 
 interface Student {
   name: string;
@@ -232,6 +234,15 @@ export class UserController {
         email,
         password: hashPassword,
       });
+
+      const token = generateVerificationToken();
+
+     try{
+      sendVerificationEmail(email, token);
+     }catch(error){
+      console.log(error)
+     }
+
       return user;
     } catch (error) {
       throw error;
