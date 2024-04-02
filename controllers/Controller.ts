@@ -91,7 +91,7 @@
 //   res.status(StatusCode.OK).json({ student });
 // };
 
-import { StudentService } from "../services/studentService";
+import { StudentService } from "../services/student.service";
 import { StatusCode } from "../utils/statusCode";
 import {
   Route,
@@ -109,7 +109,7 @@ import {
 } from "tsoa";
 import { ApiError } from "../utils/classError";
 import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
-import { UserService } from "../services/userService";
+import { UserService } from "../services/user.service";
 import { generatePassword } from "../utils/jwt";
 import { generateVerificationToken } from "../utils/generateToken";
 import { sendVerificationEmail } from "../utils/sendVerifyEmail";
@@ -235,17 +235,21 @@ export class UserController {
         password: hashPassword,
       });
 
-      const token = generateVerificationToken();
-
-     try{
-      sendVerificationEmail(email, token);
-     }catch(error){
-      console.log(error)
-     }
+      await this.userService.SendVerifyEmail(email, user.id);
 
       return user;
     } catch (error) {
       throw error;
+    }
+  }
+
+  @Get("/verify")
+  public async verifyUser(@Query() token: string) {
+    try {
+      // Verify the email token
+      await this.userService.VerifyUser(token);
+    } catch (error) {
+      throw error
     }
   }
 }

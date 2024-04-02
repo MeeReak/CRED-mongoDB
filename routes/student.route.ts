@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { StudentController } from "../controllers/Controller";
 import { validateID } from "../middleware/validateID";
 import { validateUser } from "../middleware/validateInput";
-import { StudentService } from "../services/studentService";
+import { StudentService } from "../services/student.service";
 import { StatusCode } from "../utils/statusCode";
 
 export const router = express.Router();
