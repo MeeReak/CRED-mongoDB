@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import { requestTime } from "./middleware/requestTime";
 import { paramsMethod } from "./middleware/paramsMethod";
 import { handError } from "./middleware/errorHandler";
-import studentRouter from "./routes/student.route";
+import studentRouter from "./routes/student.routes";
 import swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "./build/swagger.json";
 import redoc from "redoc-express";
-import router from "./routes/user.route";
-import userRouter from "./routes/user.route";
+import router from "./routes/user.routes";
+import userRouter from "./routes/user.routes";
 
 // Create express app
 export const app = express();

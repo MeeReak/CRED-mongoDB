@@ -108,10 +108,9 @@ import {
   Tags,
 } from "tsoa";
 import { ApiError } from "../utils/classError";
-import { validateUser } from "../middleware/validateInput"; // Assuming you have validation middleware
 import { UserService } from "../services/user.service";
 import { generatePassword } from "../utils/jwt";
-import { generateVerificationToken } from "../utils/generateToken";
+import tokenModel from "../databases/models/tokenModel";
 import { sendVerificationEmail } from "../utils/sendVerifyEmail";
 
 interface Student {
@@ -247,9 +246,9 @@ export class UserController {
   public async verifyUser(@Query() token: string) {
     try {
       // Verify the email token
-      await this.userService.VerifyUser(token);
+      const user = await this.userService.VerifyUser(token);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

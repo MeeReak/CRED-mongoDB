@@ -33,7 +33,7 @@ userRouter.get(
       const token = req.query.token as string;
       const userController = new UserController(new UserService());
       const user = await userController.verifyUser(token);
-      res.status(StatusCode.OK).json({ user });
+      res.status(StatusCode.OK).json({ user, message: "User verified"});
     } catch (error) {
       _next(error);
     }
