@@ -18,8 +18,8 @@ userRouter.post(
   async (req: Request, res: Response, _next: NextFunction) => {
     try {
       const userController = new UserController(new UserService());
-      const user = await userController.createUser(req.body);
-      res.status(StatusCode.OK).json({ user });
+      await userController.createUser(req.body);
+      res.status(StatusCode.OK).json({ message: "Sign Up Successful" });
     } catch (error) {
       _next(error);
     }

@@ -8,7 +8,10 @@ export class UserRepo {
     try {
       return await userModel.create(newData);
     } catch (error) {
-      throw new ApiError("The email already use", StatusCode.OK);
+      throw new ApiError(
+        "The email already SignUp, Please Check your mail box and Verify!!",
+        StatusCode.NotFound
+      );
     }
   }
 

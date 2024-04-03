@@ -59,11 +59,14 @@ export class UserService {
     const user = await this.repo.FindUserByEmail(email);
 
     if (!user) {
-      throw new ApiError("Email Not Found", StatusCode.NotFound);
+      throw new ApiError("Invalid username or password", StatusCode.NotFound);
     }
 
     if (user.isVerified === false) {
-      throw new ApiError("That Email is not Verify yet", StatusCode.NotFound);
+      throw new ApiError(
+        "That Email is not Verify yet, Please check your mail box and Verify!!",
+        StatusCode.NotFound
+      );
     }
 
     console.log(user);

@@ -256,11 +256,10 @@ export class UserController {
   }
 
   @Post("/login")
-  public async login(@Body() requestBody: { email: string; password: string }) {
+  public async login(@Body() requestBody: { password: string; email: string }) {
     try {
       const { email, password } = requestBody;
 
-   
       await this.userService.Login(email, password);
     } catch (error) {
       throw error;
