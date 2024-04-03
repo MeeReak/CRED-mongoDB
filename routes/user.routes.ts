@@ -32,8 +32,21 @@ userRouter.get(
     try {
       const token = req.query.token as string;
       const userController = new UserController(new UserService());
-      const user = await userController.verifyUser(token);
-      res.status(StatusCode.OK).json({ user, message: "User verified"});
+      await userController.verifyUser(token);
+      res.status(StatusCode.OK).json({ message: "User verified" });
+    } catch (error) {
+      _next(error);
+    }
+  }
+);
+
+userRouter.post(
+  "/login",
+  async (req: Request, res: Response, _next: NextFunction) => {
+    try {
+      const userController = new UserController(new UserService());
+      await userController.login(req.body);
+      res.status(StatusCode.OK).json({ message: "Login successful" });
     } catch (error) {
       _next(error);
     }

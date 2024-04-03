@@ -20,5 +20,11 @@ export class UserRepo {
     }
   }
 
-
+  async FindUserByEmail(email: string) {
+    try {
+      return await userModel.findOne({ email });
+    } catch (error) {
+      throw new ApiError("User not Found", StatusCode.NotFound);
+    }
+  }
 }

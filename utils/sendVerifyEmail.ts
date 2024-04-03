@@ -5,7 +5,7 @@ export async function sendVerificationEmail(email: string, token: string) {
     from: "meereak72@gmail", // Replace with your sender email
     to: email,
     subject: "Verify Your Email Address",
-    text: `Click on this link to verify your email: https://www.youtube.com/watch?v=m_XUClQCOUc?token=${token}`,
+    text: `Click on this link to verify your email: http://localhost:3000/api/user/verify?token=${token}`,
   };
 
   await transporter.sendMail(mailOptions);

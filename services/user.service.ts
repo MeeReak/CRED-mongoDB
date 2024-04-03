@@ -1,8 +1,8 @@
-import tokenModel from "../databases/models/tokenModel";
 import { TokenRepo } from "../databases/repositories/tokenRepo";
 import { UserRepo } from "../databases/repositories/userRepo";
 import { ApiError } from "../utils/classError";
 import { generateVerificationToken } from "../utils/generateToken";
+import { verifyPassword } from "../utils/jwt";
 import { sendVerificationEmail } from "../utils/sendVerifyEmail";
 import { StatusCode } from "../utils/statusCode";
 
@@ -53,5 +53,16 @@ export class UserService {
     // Remove the verification token
     await this.tokenRepo.deleteToken(token);
     return user;
+  }
+
+  async Login(email: string, password: string) {
+    const user = await this.repo.FindUserByEmail(email);
+
+    if (!user) {
+      throw new ApiError("Email Not Found", StatusCode.NotFound);
+    }
+
+    console.log(user);
+    return verifyPassword(password, user.password);
   }
 }

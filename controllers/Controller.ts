@@ -109,7 +109,7 @@ import {
 } from "tsoa";
 import { ApiError } from "../utils/classError";
 import { UserService } from "../services/user.service";
-import { generatePassword } from "../utils/jwt";
+import { generatePassword, generateTokenJWT } from "../utils/jwt";
 import tokenModel from "../databases/models/tokenModel";
 import { sendVerificationEmail } from "../utils/sendVerifyEmail";
 
@@ -247,6 +247,21 @@ export class UserController {
     try {
       // Verify the email token
       const user = await this.userService.VerifyUser(token);
+
+      const jwtToken = await generateTokenJWT({ id: user.id });
+      return sendVerificationEmail(user.email, jwtToken);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post("/login")
+  public async login(@Body() requestBody: { email: string; password: string }) {
+    try {
+      const { email, password } = requestBody;
+
+   
+      await this.userService.Login(email, password);
     } catch (error) {
       throw error;
     }
