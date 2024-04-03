@@ -62,6 +62,10 @@ export class UserService {
       throw new ApiError("Email Not Found", StatusCode.NotFound);
     }
 
+    if (user.isVerified === false) {
+      throw new ApiError("That Email is not Verify yet", StatusCode.NotFound);
+    }
+
     console.log(user);
     return verifyPassword(password, user.password);
   }
