@@ -52,8 +52,10 @@ export class UserService {
     if (new Date() > isToken.expiredIn) {
       const newToken = generateVerificationToken();
       sendVerificationEmail(user.email, newToken);
+      //
       const newTime = new Date();
       newTime.setMinutes(newTime.getMinutes() + 1);
+      //
       isToken.expiredIn = newTime;
       isToken.token = newToken;
       await isToken.save();
