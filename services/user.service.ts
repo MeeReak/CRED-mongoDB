@@ -2,7 +2,7 @@ import { TokenRepo } from "../databases/repositories/tokenRepo";
 import { UserRepo } from "../databases/repositories/userRepo";
 import { ApiError } from "../utils/classError";
 import { generateVerificationToken } from "../utils/generateToken";
-import { verifyPassword } from "../utils/jwt";
+import { generateTokenJWT, verifyPassword } from "../utils/jwt";
 import { sendVerificationEmail } from "../utils/sendVerifyEmail";
 import { StatusCode } from "../utils/statusCode";
 
@@ -24,7 +24,10 @@ export class UserService {
       const token = generateVerificationToken();
       sendVerificationEmail(email, token);
 
-      await this.tokenRepo.createTokenId({ id, token });
+      const expiredIn = new Date();
+      expiredIn.setMinutes(expiredIn.getMinutes() + 1); // Add 1 minute
+
+      await this.tokenRepo.createTokenId({ id, token, expiredIn });
     } catch (error) {
       throw error;
     }
@@ -46,6 +49,21 @@ export class UserService {
       throw new ApiError("User does not exist.", StatusCode.NotFound);
     }
 
+    if (new Date() > isToken.expiredIn) {
+      const newToken = generateVerificationToken();
+      sendVerificationEmail(user.email, newToken);
+      const newTime = new Date();
+      newTime.setMinutes(newTime.getMinutes() + 1);
+      isToken.expiredIn = newTime;
+      isToken.token = newToken;
+      await isToken.save();
+
+      throw new ApiError(
+        "We wanted to inform you that your token has expired. You need to check your mail box, to get the new token.",
+        StatusCode.BadRequest
+      );
+    }
+
     // Mark the user's email as verified
     user.isVerified = true;
     await user.save();
@@ -58,6 +76,8 @@ export class UserService {
   async Login(email: string, password: string) {
     const user = await this.repo.FindUserByEmail(email);
 
+    const expiredIn = new Date();
+    console.log(expiredIn);
     if (!user) {
       throw new ApiError("Invalid username or password", StatusCode.NotFound);
     }
@@ -69,7 +89,10 @@ export class UserService {
       );
     }
 
-    console.log(user);
-    return verifyPassword(password, user.password);
+    await verifyPassword(password, user.password);
+
+    const token = generateTokenJWT({ id: user.id });
+
+    return token;
   }
 }

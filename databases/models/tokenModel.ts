@@ -26,6 +26,10 @@ const tokenSchema = new Schema({
       return true;
     },
   },
+  expiredIn: {
+    type: Date, 
+    required: false, 
+  }
 });
 
 export default mongoose.model<IToken>("Token", tokenSchema);

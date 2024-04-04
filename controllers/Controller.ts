@@ -249,7 +249,7 @@ export class UserController {
       const user = await this.userService.VerifyUser(token);
 
       const jwtToken = await generateTokenJWT({ id: user.id });
-      return sendVerificationEmail(user.email, jwtToken);
+      return jwtToken;
     } catch (error) {
       throw error;
     }
@@ -260,7 +260,7 @@ export class UserController {
     try {
       const { email, password } = requestBody;
 
-      await this.userService.Login(email, password);
+      return this.userService.Login(email, password);
     } catch (error) {
       throw error;
     }

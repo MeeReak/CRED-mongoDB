@@ -45,8 +45,10 @@ userRouter.post(
   async (req: Request, res: Response, _next: NextFunction) => {
     try {
       const userController = new UserController(new UserService());
-      await userController.login(req.body);
-      res.status(StatusCode.OK).json({ message: "Login successful" });
+      const jwtToken = await userController.login(req.body);
+      res
+        .status(StatusCode.OK)
+        .json({ message: "Login successful", token: jwtToken });
     } catch (error) {
       _next(error);
     }
