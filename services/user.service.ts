@@ -50,16 +50,20 @@ export class UserService {
     }
 
     if (new Date() > isToken.expiredIn) {
+      //create a new token 
       const newToken = generateVerificationToken();
+      //send it to user 
       sendVerificationEmail(user.email, newToken);
-      //
+      //create new time for new token
       const newTime = new Date();
+      //add 1 mn to the newTime
       newTime.setMinutes(newTime.getMinutes() + 1);
-      //
+      //update newtime and new token 
       isToken.expiredIn = newTime;
       isToken.token = newToken;
+      //save it again
       await isToken.save();
-
+      //send message to user 
       throw new ApiError(
         "We wanted to inform you that your token has expired. You need to check your mail box, to get the new token.",
         StatusCode.BadRequest
